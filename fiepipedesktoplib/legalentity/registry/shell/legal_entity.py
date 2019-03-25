@@ -1,7 +1,7 @@
 import sys
 import typing
 
-import fiepipelib.applauncher.genericlauncher
+import fiepipedesktoplib.applauncher.genericlauncher
 import fiepipelib.localuser.routines.localuser
 import fiepipedesktoplib.shells.AbstractShell
 import fiepipedesktoplib.sites.shells.localsite

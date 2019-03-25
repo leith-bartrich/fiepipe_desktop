@@ -5,7 +5,7 @@ import fiepipelib.sites.data.localsite
 import fiepipelib.container
 import fiepipelib.legalentity.registry.data.registered_entity
 import sys
-import fiepipelib.applauncher.genericlauncher
+import fiepipedesktoplib.applauncher.genericlauncher
 import fiepipedesktoplib.container.shells.container
 from fiepipedesktoplib.shells.variables.fqdn_var_command import FQDNVarCommand
 
