@@ -2,8 +2,8 @@
 **/__pycache__
 **/__pycache__/**
 *.pyc
-**/fiepipe.egg-info
-**/fiepipe.egg-info/**
+**/fiepipe_desktop.egg-info
+**/fiepipe_desktop.egg-info/**
 .vscode
 *.pyproj
 .idea/**
