@@ -63,12 +63,12 @@ class Shell(GitRepoShell):
     def get_prompt_text(self) -> str:
         routines = self.get_routines()
         routines.load()
-        fqdn = routines.container.get_fqdn()
+        fqdn = routines.container.GetFQDN()
         container_name = routines.container.GetShortName()
         relpath = routines.relative_path
         relpath = relpath.replace("\\", "/")
         # subpath = routines._working_asset.GetSubmodule().path
-        root_name = routines._root.GetName()
+        root_name = routines.root.GetName()
         return self.prompt_separator.join(['fiepipe', fqdn, container_name, root_name, relpath])
 
     def do_commit(self, args):

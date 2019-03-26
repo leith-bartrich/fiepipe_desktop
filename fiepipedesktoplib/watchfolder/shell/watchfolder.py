@@ -2,8 +2,8 @@ import os
 import os.path
 import typing
 
-from fiepipedesktoplib.assetaspect.shell import AssetConfigCommand
-from fiepipedesktoplib.gitstorage.shells import Shell as GitAssetShell
+from fiepipedesktoplib.assetaspect.shell.config import AssetConfigCommand
+from fiepipedesktoplib.gitstorage.shells.gitasset import Shell as GitAssetShell
 from fiepipelib.localplatform.routines.localplatform import get_local_platform_routines
 from fiepipelib.localuser.routines.localuser import LocalUserRoutines
 from fiepipelib.watchfolder.data.aspect_config import WatchFolderConfig

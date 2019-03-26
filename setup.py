@@ -27,10 +27,10 @@ install_requires=["rpyc","plumbum","paramiko","cryptography","GitPython","cmd2",
             #'fiepipestateserver = fiepipestateserver:main',
             'fiepipe_gitlab = fiepipelib.gitlabserver.shell.manager:main',
             'fiepipe_containers = fiepipelib.container.shells.manager:main',
-            'fiepipe_watchfolder = fiepipelib.watchfolder.shell.watchfolder:main',
+            'fiepipe_watchfolder = fiepipedesktoplib.watchfolder.shell.watchfolder:main',
         ],
         'fiepipe.plugin.shell.gitasset.v1': [
-            'watchfolders = fiepipelib.watchfolder.shell.watchfolder:git_asset_shell_plugin',
+            'watchfolders = fiepipedesktoplib.watchfolder.shell.watchfolder:git_asset_shell_plugin',
         ],
 
     },
