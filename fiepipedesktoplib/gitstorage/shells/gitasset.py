@@ -60,16 +60,20 @@ class Shell(GitRepoShell):
         ret.append('gitasset')
         return ret
 
+    _prompt_text:str = None
+
     def get_prompt_text(self) -> str:
-        routines = self.get_routines()
-        routines.load()
-        fqdn = routines.container.GetFQDN()
-        container_name = routines.container.GetShortName()
-        relpath = routines.relative_path
-        relpath = relpath.replace("\\", "/")
-        # subpath = routines._working_asset.GetSubmodule().path
-        root_name = routines.root.GetName()
-        return self.prompt_separator.join(['fiepipe', fqdn, container_name, root_name, relpath])
+        if self._prompt_text is None:
+            routines = self.get_routines()
+            routines.load()
+            fqdn = routines.container.GetFQDN()
+            container_name = routines.container.GetShortName()
+            relpath = routines.relative_path
+            relpath = relpath.replace("\\", "/")
+            # subpath = routines._working_asset.GetSubmodule().path
+            root_name = routines.root.GetName()
+            self._prompt_text = self.prompt_separator.join(['fiepipe', fqdn, container_name, root_name, relpath])
+        return self._prompt_text
 
     def do_commit(self, args):
         """Commmit this asset and its sub-assets

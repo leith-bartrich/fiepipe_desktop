@@ -354,7 +354,7 @@ class AssetsCommand(fiepipedesktoplib.shells.AbstractShell.AbstractShell):
 
         routines = self._rootShell.get_routines()
         routines.load()
-        asset = routines.get_asset(args[0])
+        asset = routines.get_working_asset(args[0])
 
         #path = asset.GetSubmodule().path
         container_var = ContainerIDVariableCommand(routines.container.GetID())
@@ -401,7 +401,7 @@ class AssetsCommand(fiepipedesktoplib.shells.AbstractShell.AbstractShell):
         routines = self._rootShell.get_routines()
         routines.load()
         for arg in args:
-            asset = routines.get_asset(arg)
+            asset = routines.get_working_asset(arg)
             asset_routines = GitAssetRoutines(routines.container.GetID(), routines.root.GetID(),
                                                          asset.GetAsset().GetID(),
                                                          self.get_feedback_ui())
