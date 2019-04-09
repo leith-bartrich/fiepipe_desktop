@@ -1,25 +1,21 @@
 import sys
 import typing
 
-import fiepipelib.gitstorage.data.git_asset
-import fiepipelib.gitstorage.data.git_root
-import fiepipelib.gitstorage.data.git_working_asset
-import fiepipelib.gitstorage.data.local_root_configuration
 import fiepipedesktoplib.gitstorage.shells.gitroot
 import fiepipedesktoplib.gitstorage.shells.roots_component
-import fiepipelib.legalentity.registry.data.registered_entity
 import fiepipedesktoplib.locallymanagedtypes.shells.AbstractLocalManagedTypeCommand
 import fiepipedesktoplib.shells.AbstractShell
-from fiepipedesktoplib.automanager.shell.automanager import GitLabServerModeChoiceShellUI, \
-    ModalTrueFalseDefaultQuestionShellUI, GitLabServerNameShellModalInput
+from fiepipedesktoplib.automanager.shell.automanager import ModalTrueFalseDefaultQuestionShellUI, \
+    GitLabServerNameShellModalInput
 from fiepipedesktoplib.components.shells.component import AbstractComponentCommand
 from fiepipedesktoplib.components.shells.component import AbstractComponentContainerShell
+from fiepipedesktoplib.container.shells.container_id_var_command import ContainerIDVariableCommand
 from fiepipelib.container.local_config.data.automanager import ContainerAutomanagerConfigurationComponent
 from fiepipelib.container.local_config.routines.automanager import \
     ContainerAutomanagerConfigurationComponentRoutinesInteractive
-from fiepipelib.container.shared.routines.container import ContainerRoutines
-from fiepipedesktoplib.container.shells.container_id_var_command import ContainerIDVariableCommand
 from fiepipelib.container.local_config.routines.container import LocalContainerRoutines
+from fiepipelib.container.shared.routines.container import ContainerRoutines
+
 
 class ContainerShell(fiepipedesktoplib.shells.AbstractShell.AbstractShell, AbstractComponentContainerShell):
     """A shell for working in a local container"""
@@ -45,7 +41,8 @@ class ContainerShell(fiepipedesktoplib.shells.AbstractShell.AbstractShell, Abstr
         self._container_id_var = container_id_var
         super().__init__()
         self.add_variable_command(container_id_var, "container", [], False)
-        roots_submenu = fiepipedesktoplib.gitstorage.shells.roots_component.RootsComponentCommand(self._container_id_var)
+        roots_submenu = fiepipedesktoplib.gitstorage.shells.roots_component.RootsComponentCommand(
+            self._container_id_var)
         self.add_submenu(roots_submenu, "roots", [])
         automanager_config_submenu = ContainerAutomanagerConfigurationCommand(self)
         self.add_submenu(automanager_config_submenu, "automanager_configuration", [])
@@ -83,7 +80,7 @@ class ContainerAutomanagerConfigurationCommand(AbstractComponentCommand[Containe
         routines = self.get_component_routines()
         self.do_coroutine(
             routines.reconfigure_routine(self.get_feedback_ui(), ModalTrueFalseDefaultQuestionShellUI(self),
-                                         GitLabServerModeChoiceShellUI(self), GitLabServerNameShellModalInput(self)))
+                                          GitLabServerNameShellModalInput(self)))
 
     def do_print(self, args):
         """prints the automanager configuration for this container
@@ -91,6 +88,7 @@ class ContainerAutomanagerConfigurationCommand(AbstractComponentCommand[Containe
         Usage: print"""
         routines = self.get_component_routines()
         self.do_coroutine(routines.print_routine(self.get_feedback_ui()))
+
 
 def main():
     container_var = ContainerIDVariableCommand("")

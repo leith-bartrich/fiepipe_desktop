@@ -2,7 +2,7 @@ import asyncio
 import typing
 import enum
 import abc
-
+import colorama
 from fieui.AbstractEnumChoiceModal import AbstractEnumChoiceModal, T
 from fieuishell.Shell import Shell
 
@@ -34,7 +34,7 @@ class EnumInputModalShellUI(AbstractEnumChoiceModal[T]):
 
         try:
             while True:
-                self._print_color("Choose: " + question + " [enter to list]", "blue")
+                self._print_color("Choose: " + question + " [enter to list]", colorama.Fore.BLUE)
                 r = str(self._shell.pseudo_raw_input(": "))
                 if r.strip() == "":
                     for name in names:

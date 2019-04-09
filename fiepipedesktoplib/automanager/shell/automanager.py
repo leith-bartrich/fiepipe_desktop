@@ -1,17 +1,18 @@
 import typing
 
-from fiepipelib.automanager.data.localconfig import LegalEntityConfig
-from fiepipelib.automanager.data.localconfig import LegalEntityMode, GitLabServerMode
-from fiepipelib.automanager.routines.automanager import AutoManagerInteractiveRoutines, LegalEntityModeChoiceUI, \
-    GitlabServerModeCoiceUI, GitlabServerNameUI, LegalEntityInteractiveRoutines
 from fiepipedesktoplib.locallymanagedtypes.shells.AbstractLocalManagedTypeCommand import LocalManagedTypeCommand
 from fiepipedesktoplib.shells.AbstractShell import AbstractShell
+from fiepipelib.automanager.data.localconfig import LegalEntityConfig
+from fiepipelib.automanager.data.localconfig import LegalEntityMode
+from fiepipelib.automanager.routines.automanager import AutoManagerInteractiveRoutines, LegalEntityModeChoiceUI, \
+    GitlabServerNameUI, LegalEntityInteractiveRoutines
 from fieui.InputModalUI import T
 from fieuishell.EnumChoiceModal import EnumInputModalShellUI
 from fieuishell.ModalInputDefaultUI import InputDefaultModalShellUI
 from fieuishell.ModalInputUI import InputModalShellUI
-from fieuishell.Shell import VarCommand
 from fieuishell.ModalTrueFalseDefaultQuestionUI import ModalTrueFalseDefaultQuestionShellUI
+from fieuishell.Shell import VarCommand
+
 
 class LegalEntityModeChoiceShellUI(LegalEntityModeChoiceUI, EnumInputModalShellUI[LegalEntityMode]):
 
@@ -28,19 +29,6 @@ class LegalEntityModeChoiceShellUI(LegalEntityModeChoiceUI, EnumInputModalShellU
             return False, LegalEntityMode.NONE
 
 
-class GitLabServerModeChoiceShellUI(GitlabServerModeCoiceUI, EnumInputModalShellUI[GitLabServerMode]):
-
-    def get_names(self) -> typing.List[str]:
-        ret = []
-        for v in GitLabServerMode:
-            ret.append(v.name)
-        return ret
-
-    def to_value(self, text) -> (bool, T):
-        try:
-            return True, GitLabServerMode[text]
-        except KeyError:
-            return False, GitLabServerMode.AUTO
 
 
 class GitLabServerNameShellModalInput(GitlabServerNameUI, InputDefaultModalShellUI[str]):
@@ -100,7 +88,6 @@ class EntityConfigCommand(LocalManagedTypeCommand[LegalEntityConfig]):
 
     def get_routines(self) -> LegalEntityInteractiveRoutines:
         return LegalEntityInteractiveRoutines(self.get_feedback_ui(), LegalEntityModeChoiceShellUI(self),
-                                              GitLabServerModeChoiceShellUI(self),
                                               GitLabServerNameShellModalInput(self),
                                               ModalTrueFalseDefaultQuestionShellUI(self))
 

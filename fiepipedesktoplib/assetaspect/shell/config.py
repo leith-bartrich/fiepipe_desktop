@@ -1,22 +1,22 @@
 import abc
 import typing
 
+from fiepipedesktoplib.gitaspect.shell.config import GitConfigCommand
 from fiepipelib.assetaspect.data.config import AssetAspectConfiguration
 from fiepipelib.assetaspect.routines.config import AssetAspectConfigurationRoutines
-from fiepipedesktoplib.gitaspect.shell.config import GitConfigCommand
-from fiepipedesktoplib.gitstorage.shells.gitasset import Shell as GitAssetShell
+from fiepipelib.gitstorage.routines.gitasset import GitAssetInteractiveRoutines
 
 TA = typing.TypeVar("TA", bound=AssetAspectConfiguration)
 
 
 class AssetConfigCommand(GitConfigCommand[TA], typing.Generic[TA]):
-    _asset_shell: GitAssetShell = None
+    _asset_routines: GitAssetInteractiveRoutines = None
 
-    def get_asset_shell(self) -> GitAssetShell:
-        return self._asset_shell
+    def get_asset_routines(self) -> GitAssetInteractiveRoutines:
+        return self._asset_routines
 
-    def __init__(self, asset_shell: GitAssetShell):
-        self._asset_shell = asset_shell
+    def __init__(self, asset_routines: GitAssetInteractiveRoutines):
+        self._asset_routines = asset_routines
         super(AssetConfigCommand, self).__init__()
 
     @abc.abstractmethod
@@ -30,8 +30,14 @@ class AssetConfigCommand(GitConfigCommand[TA], typing.Generic[TA]):
         return ret
 
     def get_prompt_text(self) -> str:
-        return self.prompt_separator.join([self._asset_shell.get_prompt_text(),
-                                           self.get_configuration_data().get_config_name()])
+        asset_routines = self.get_asset_routines()
+        asset_routines.load()
+        fqdn = asset_routines.container.GetFQDN()
+        container_name = asset_routines.container.GetShortName()
+        root_name = asset_routines.root.GetName()
+        asset_path = asset_routines.relative_path
+        config_name = self.get_configuration_data().get_config_name()
+        return self.prompt_separator.join(["fiepipe",fqdn,container_name,root_name,asset_path,config_name])
 
     def do_update_git_meta(self, args):
         """Updates git meta-data for this aspect.  Meaning it updates .gitignore and lfs tracking

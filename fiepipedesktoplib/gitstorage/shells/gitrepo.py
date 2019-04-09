@@ -1,7 +1,7 @@
 import abc
 import os
 import typing
-
+import colorama
 import git
 
 from fiepipelib.gitstorage.routines.gitrepo import GitRepoRoutines
@@ -149,8 +149,8 @@ class GitRepoShell(AbstractShell, abc.ABC):
         routines.load()
         can, reason = routines.can_commit()
         if can:
-            self.poutput(self.colorize("Yes",'green'))
-            self.poutput(self.colorize(reason,'green'))
+            self.poutput(self.colorize("Yes", colorama.Fore.GREEN))
+            self.poutput(self.colorize(reason,colorama.Fore.GREEN))
         else:
-            self.poutput(self.colorize("No",'red'))
-            self.poutput(self.colorize(reason,'yellow'))
+            self.poutput(self.colorize("No", colorama.Fore.RED))
+            self.poutput(self.colorize(reason, colorama.Fore.YELLOW))

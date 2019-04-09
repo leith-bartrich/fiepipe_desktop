@@ -1,6 +1,7 @@
 import abc
 import typing
 from abc import ABC
+import colorama
 
 from fiepipelib.components.data.components import AbstractComponent, AbstractNamedItemListComponent
 from fiepipelib.components.routines.bound_component import AbstractBoundComponentRoutines
@@ -139,9 +140,9 @@ class AbstractNamedListBoundComponentCommand(AbstractShell, typing.Generic[NLSC,
             return
         routines = self.get_named_list_bound_component_routines()
         if routines.local_item_exists(args[0]):
-            self.poutput(self.colorize('yes', 'green'))
+            self.poutput(self.colorize('yes', colorama.Fore.GREEN))
         else:
-            self.poutput(self.colorize('no', 'yellow'))
+            self.poutput(self.colorize('no', colorama.Fore.YELLOW))
 
     @abc.abstractmethod
     def get_shell(self, name) -> AbstractShell:

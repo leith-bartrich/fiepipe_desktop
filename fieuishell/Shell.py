@@ -5,9 +5,12 @@ import subprocess
 import sys
 import types
 import typing
+import shlex
 
 import cmd2
 import pkg_resources
+
+import colorama
 
 from fieuishell.FeedbackUI import ShellFeedbackUI
 from fieuishell.ModalInputUI import InputModalShellUI
@@ -15,7 +18,9 @@ from fieuishell.ModalTrueFalseDefaultQuestionUI import ModalTrueFalseDefaultQues
 from fieuishell.ModalTrueFalseQuestionUI import ModalTrueFalseQuestionShellUI
 
 from cmd2_submenu import submenu
-from cmd2.cmd2 import Cmd, parse_quoted_string
+from cmd2.cmd2 import Cmd
+
+
 
 
 class Shell(cmd2.Cmd):
@@ -129,6 +134,10 @@ class Shell(cmd2.Cmd):
         """Postpend to all shell plugins that inherit from this shell."""
         raise NotImplementedError()
 
+    def colorize(self, text:str, fore_color:str):
+        return fore_color + text + colorama.Fore.RESET
+
+
     def __init__(self):
         self.allow_cli_args = False
         super().__init__()
@@ -136,7 +145,7 @@ class Shell(cmd2.Cmd):
             entrypoints = pkg_resources.iter_entry_points(
                 self.get_plugin_prepend() + pluginname + self.get_plugin_postpend())
             for entrypoint in entrypoints:
-                print(self.colorize("Loading shell plugin: " + entrypoint.name + ":" + pluginname, 'green'))
+                print(self.colorize("Loading shell plugin: " + entrypoint.name + ":" + pluginname, colorama.Fore.GREEN))
                 method = entrypoint.load()
                 method(self)
         self.prompt = self.get_prompt_text() + self.prompt_ending
@@ -195,7 +204,8 @@ class Shell(cmd2.Cmd):
 
     def parse_arguments(self, line: str) -> typing.List[str]:
         """Parses aruguments from a string into a list of arguments as per the underlying Cmd implementation."""
-        return parse_quoted_string(line, preserve_quotes=False)
+        return shlex.split(line, comments=False, posix=False)
+        #return parse_quoted_string(line, preserve_quotes=False)
 
     def argument_exists(self, args: typing.List[str], lookingFor: typing.List[str]) -> bool:
         """Returns True or False if any of the given lookingFor arguments are in the given args list."""

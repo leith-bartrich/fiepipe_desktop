@@ -1,5 +1,5 @@
 import fieui.FeedbackUI
-
+import colorama
 
 class ShellFeedbackUI(fieui.FeedbackUI.AbstractFeedbackUI):
     _shell = None
@@ -11,11 +11,11 @@ class ShellFeedbackUI(fieui.FeedbackUI.AbstractFeedbackUI):
         super().__init__()
 
     async def error(self, message: str):
-        m = self._shell.colorize(message, 'red')
+        m = self._shell.colorize(message, colorama.Fore.RED)
         self._shell.perror(m, traceback_war=self._tracebackWarning)
 
     async def warn(self, message: str):
-        m = self._shell.colorize("Warning: " + message, 'yellow')
+        m = self._shell.colorize("Warning: " + message, colorama.Fore.YELLOW)
         self._shell.pfeedback(m)
 
     async def output(self, message: str):

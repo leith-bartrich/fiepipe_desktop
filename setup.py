@@ -16,7 +16,7 @@ setup(
     py_modules=["fieuishell","fiepipedesktoplib"],
     packages = find_packages(),
 
-install_requires=["rpyc","plumbum","paramiko","cryptography","GitPython","cmd2","cmd2-submenu>=0.3.0","bcrypt","pycryptodome","pyreadline","keyboard","cookiecutter","watchdog>=0.9.0"],
+install_requires=["rpyc","plumbum","paramiko","cryptography","GitPython","cmd2","cmd2-submenu>=0.3.0","colorama","bcrypt","pycryptodome","pyreadline","keyboard","cookiecutter","watchdog>=0.9.0"],
     entry_points={
         'fiepipe.plugin.shell.gitlabserver.shell.v1' : [
             'container = fiepipelib.container.shells.gitlabserver:FIEPipeShellPlugin',

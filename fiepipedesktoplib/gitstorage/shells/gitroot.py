@@ -4,7 +4,7 @@ import typing
 import sys
 import cmd2
 import shlex
-
+import colorama
 import fiepipedesktoplib.shells.AbstractShell
 from fiepipedesktoplib.container.shells.container_id_var_command import ContainerIDVariableCommand
 from fiepipelib.gitlabserver.data.gitlab_server import GitLabServerManager
@@ -427,17 +427,17 @@ class AssetsCommand(fiepipedesktoplib.shells.AbstractShell.AbstractShell):
                 untracked = asset_routines.has_untracked()
 
                 if dirty_index:
-                    dirty_index_text = self.colorize('Dirty Index','yellow')
+                    dirty_index_text = self.colorize('Dirty Index', colorama.Fore.YELLOW)
                 else:
                     dirty_index_text = 'Clean Index'
 
                 if dirty_worktree:
-                    dirty_worktree_text = self.colorize('Dirty Worktree','red')
+                    dirty_worktree_text = self.colorize('Dirty Worktree', colorama.Fore.RED)
                 else:
                     dirty_worktree_text = 'Clean Worktree'
 
                 if untracked:
-                    untracked_text = self.colorize('Untracked files','red')
+                    untracked_text = self.colorize('Untracked files', colorama.Fore.RED)
                 else:
                     untracked_text = 'All files tracked'
 
@@ -446,7 +446,7 @@ class AssetsCommand(fiepipedesktoplib.shells.AbstractShell.AbstractShell):
                 asset_id = working_asset.GetAsset().GetID()
                 asset_routines = GitAssetRoutines(self._rootShell._container_id_var.get_value(),self._rootShell._root_id_var.get_value(),asset_id,self.get_feedback_ui())
                 asset_routines.load()
-                self.poutput(asset_routines.relative_path + " - " + self.colorize("Not Checked Out",'cyan')
+                self.poutput(asset_routines.relative_path + " - " + self.colorize("Not Checked Out",colorama.Fore.CYAN)
 )
 
     def do_submodule_status(self, args):

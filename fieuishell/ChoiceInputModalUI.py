@@ -1,5 +1,6 @@
 import asyncio
 import typing
+import colorama
 
 from fieui.ChoiceInputModalUI import AbstractChoiceInputModalUI, T
 from fieuishell.Shell import Shell
@@ -21,7 +22,7 @@ class ChoiceInputModalShellUI(AbstractChoiceInputModalUI[T]):
     async def execute(self, question: str, choices: typing.Dict[str,T]) -> typing.Tuple[str, T]:
         try:
             while True:
-                self._print_color("Choose: " + question + " [enter to list]", "blue")
+                self._print_color("Choose: " + question + " [enter to list]", colorama.Fore.BLUE)
                 r = str(self._shell.pseudo_raw_input(": "))
                 if r.strip() == "":
                     for name in choices.keys():
