@@ -16,7 +16,6 @@ from fiepipelib.rootaspect.data.config import RootAsepctConfiguration
 
 TG = typing.TypeVar("TG", bound=AbstractGitStorageBasePath)
 
-
 class PathCommand(AbstractShell, typing.Generic[TG], abc.ABC):
     """Base for all path commands."""
 
@@ -47,13 +46,18 @@ class StructureGitConfigCommand(GitConfigCommand[TGC], PathCommand[TG], typing.G
 
 class StructureRootConfigCommand(RootConfigCommand[TRC], StructureGitConfigCommand[TRC, TR], typing.Generic[TRC, TR],
                                  abc.ABC):
-    """An root aspect that acts as the base of a root structure."""
+    """An root aspect that acts as the base of a root structure.
+    TRC - RootAspectConfiguration
+    TR - AbstractRootBasePath"""
     pass
 
 
 class StructureAssetConfigCommand(AssetConfigCommand[TAC], StructureGitConfigCommand[TAC, TA], typing.Generic[TAC, TA],
                                   abc.ABC):
-    """An asset aspect that acts as the base of an asset structure."""
+    """An asset aspect that acts as the base of an asset structure.
+    TAC - AssetAspectConfiguration - aspect configuration type
+    TA - AbstractAssetBasePath - structure routines type
+    """
 
 
 class DirPathCommand(PathCommand[TG], abc.ABC):
@@ -82,7 +86,7 @@ class DirPathCommand(PathCommand[TG], abc.ABC):
 class SubPathCommand(PathCommand[TG], typing.Generic[TG, DT, TGC], abc.ABC):
 
     @abc.abstractmethod
-    def get_structure_routines(self) -> AbstractSubPath[TG, DT]:
+    def get_structure_routines(self) -> AbstractSubPath[TG,DT]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -131,10 +135,8 @@ class AssetsStaticSubdirCommand(StaticSubdirCommand[TG, DT, TGC]):
         """Lists assets for this asset directory.
         Usage: list
         """
-        ret = []
         for dirname in self.get_structure_routines().get_submodules().keys():
-            ret.append(dirname)
-        return ret
+            self.poutput(dirname)
 
 
 TABPC = typing.TypeVar("TABPC", bound=StructureAssetConfigCommand)
@@ -142,6 +144,13 @@ TABPC = typing.TypeVar("TABPC", bound=StructureAssetConfigCommand)
 
 class GenericTypedAssetsSubdirCommandCommand(AssetsStaticSubdirCommand[TG, DT, TGC],
                                              typing.Generic[TG, DT, TGC, TABP, TABPC]):
+    """
+    TG - AbstractGitStorageBasePath - root_base_path type
+    DT - AbstractDirPath - parent_path type
+    TGC - GitAspectConfiguration - aspect_config type
+    TABP - AbstractAssetBasePath - sub asset_base_path type
+    TABPC - StructureAssetConfigCommand - sub asset_base_path_configuration_command type
+    """
 
     @abc.abstractmethod
     def get_name(self) -> str:

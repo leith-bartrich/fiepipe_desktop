@@ -90,7 +90,7 @@ class Shell(GitRepoShell):
         """
         routines = self.get_routines()
         routines.load()
-        self.do_coroutine(routines.init_new())
+        self.do_coroutine(routines.init_new(self.get_feedback_ui()))
 
     complete_init_new_split = mounted_backing_store_completion
 

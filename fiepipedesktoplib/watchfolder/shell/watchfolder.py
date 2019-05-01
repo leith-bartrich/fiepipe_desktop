@@ -17,13 +17,13 @@ class WatchFolderShellApplication(AssetConfigCommand[WatchFolderConfig]):
         super().__init__(asset_shell)
 
     def get_configuration_data(self) -> WatchFolderConfig:
-        asset_routines = self.get_asset_shell().get_routines()
+        asset_routines = self.get_asset_shell().get_asset_routines()
         asset_routines.load()
         asset_path = asset_routines.abs_path
         return WatchFolderConfig(asset_path)
 
     def get_configuration_routines(self) -> WatcherRoutines:
-        return WatcherRoutines(self.get_configuration_data(), self.get_asset_shell().get_routines(),
+        return WatcherRoutines(self.get_configuration_data(), self.get_asset_shell().get_asset_routines(),
                                self.get_feedback_ui())
 
     def get_plugin_names_v1(self) -> typing.List[str]:
@@ -63,7 +63,7 @@ class WatchFolderShellApplication(AssetConfigCommand[WatchFolderConfig]):
 
         routines = self.get_configuration_routines()
         routines.load()
-        asset_routines = self.get_asset_shell().get_routines()
+        asset_routines = self.get_asset_shell().get_asset_routines()
         asset_routines.load()
 
         watchfolder_routines = WatcherRoutines(routines.get_configuration(), asset_routines, self.get_feedback_ui())
@@ -97,7 +97,7 @@ class WatchFolderShellApplication(AssetConfigCommand[WatchFolderConfig]):
 
         routines = self.get_configuration_routines()
         routines.load()
-        asset_routines = self.get_asset_shell().get_routines()
+        asset_routines = self.get_asset_shell().get_asset_routines()
         asset_routines.load()
 
         watchfolder_routines = WatcherRoutines(routines.get_configuration(), asset_routines, self.get_feedback_ui())
@@ -139,7 +139,7 @@ class WatchFolderShellApplication(AssetConfigCommand[WatchFolderConfig]):
 
         routines = self.get_configuration_routines()
         routines.load()
-        asset_routines = self.get_asset_shell().get_routines()
+        asset_routines = self.get_asset_shell().get_asset_routines()
         asset_routines.load()
         watchfolder_routines = WatcherRoutines(routines.get_configuration(), asset_routines, self.get_feedback_ui())
         self.do_coroutine(watchfolder_routines.start_watching_routine(asset_routines.abs_path, path))
