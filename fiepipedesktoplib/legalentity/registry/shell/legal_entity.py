@@ -65,7 +65,7 @@ class LegalEntityShell(fiepipedesktoplib.shells.AbstractShell.AbstractShell):
         except KeyError as err:
             self.perror("This entity isn't configured for automanager.")
             return
-        self.do_coroutine(automanager_routines.automanage_fqdn(self.get_feedback_ui(),config))
+        self.do_coroutine(automanager_routines.automanage_fqdn(self.get_feedback_ui(),self.get_fqdn()))
 
 
 
