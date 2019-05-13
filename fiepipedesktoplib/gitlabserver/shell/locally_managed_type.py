@@ -2,7 +2,7 @@ import abc
 import typing
 
 from fiepipelib.gitlabserver.routines.gitlabserver import GitLabManagedTypeInteractiveRoutines
-from fiepipedesktoplib.gitlabserver.shell import GitLabServerShell
+from fiepipedesktoplib.gitlabserver.shell.gitlabserver import GitLabServerShell
 from fiepipedesktoplib.shells.AbstractShell import AbstractShell
 
 T = typing.TypeVar("T", bound=GitLabManagedTypeInteractiveRoutines)
@@ -58,23 +58,12 @@ class LocalManagedUserTypeCommand(AbstractLocalManagedTypeCommand[T], typing.Gen
         ret.append("gitlabserver.localmanagedtype.user")
         return ret
 
-    def do_push_all(self, arg):
-        self.do_coroutine(self.get_routines().push_all_routine(self.get_server_username()))
+    def do_checkout(self, args):
+        self.do_coroutine(self.get_routines().checkout_routine(self.get_feedback_ui(),self.get_server_username()))
 
-    def do_pull_all(self, arg):
-        self.do_coroutine(self.get_routines().pull_all_routine(self.get_server_username()))
+    def do_safe_merge_update(self, args):
+        self.do_coroutine(self.get_routines().safe_merge_update_routine(self.get_feedback_ui(),self.get_server_username()))
 
-    complete_push = items_complete
-
-    def do_push(self, arg):
-        args = self.parse_arguments(arg)
-        self.do_coroutine(self.get_routines().push_routine(self.get_server_username(), args))
-
-    complete_pull = items_complete
-
-    def do_pull(self, arg):
-        args = self.parse_arguments(arg)
-        self.do_coroutine(self.get_routines().pull_routine(self.get_server_username(), args))
 
     def do_init_local(self, arg):
         """Initializes an empty local worktree for this GitLab managed type source
@@ -104,65 +93,31 @@ class LocalManagedGroupTypeCommand(AbstractLocalManagedTypeCommand[T], typing.Ge
         # TODO: Implement this at some point?
         return []
 
-    complete_push_all = groupnames_complete
+    complete_checkout = groupnames_complete
 
-    def do_push_all(self, arg):
-        """Pushes all items to a given gitlab group.
-        Usage: push_all [groupname]
-        arg groupname:  The name of the GitLab group to push to.
+    def do_checkout(self, args):
+        """Checks out and replaces local items from given gitlab group
+        Usage: checkout [groupname]
+        arg groupname:  The name of the GitLab group to checkout from.
         """
-        args = self.parse_arguments(arg)
+        args = self.parse_arguments(args)
         if len(args) < 1:
             self.perror("No group specified.")
             return
-        self.do_coroutine(self.get_routines().push_all_routine(args[0]))
+        self.do_coroutine(self.get_routines().checkout_routine(self.get_feedback_ui(),args[0]))
 
-    complete_pull_all = groupnames_complete
+    complete_safe_merge_update = groupnames_complete
 
-    def do_pull_all(self, arg):
+    def do_safe_merge_update(self, args):
+        """Does a safe merge based update of items from and to the given gitlab group.
+        Usage: safe_merge_update [groupname]
+        arg groupname: The name of the GitLab group to update from\to
         """
-        Pulls all items from a given gitlab group.
-        Usage: pull_all [groupname]
-        arg groupname:  The name of the GitLab group to pull from.
-        """
-        args = self.parse_arguments(arg)
+        args = self.parse_arguments(args)
         if len(args) < 1:
             self.perror("No group specified.")
             return
-        self.do_coroutine(self.get_routines().pull_all_routine(args[0]))
-
-    def pushpull_complete(self, text, line, begidx, endidx):
-        self.index_based_complete(text, line, begidx, endidx, {1: self.groupnames_complete}, self.items_complete)
-
-    complete_push = pushpull_complete
-
-    def do_push(self, arg):
-        """
-        Push the given named items to the given GitLab group.
-        Usage: push [groupname] [item] ... [item]
-        arg groupname: the name of the GitLab group to push to.
-        args item: any number of item names to push.
-        """
-        args = self.parse_arguments(arg)
-        if len(args) < 1:
-            self.perror("No group specified.")
-            return
-        self.do_coroutine(self.get_routines().push_routine(self.get_server_username(), args[1:]))
-
-    complete_pull = pushpull_complete
-
-    def do_pull(self, arg):
-        """
-        Pull the given named items from the given GitLab group.
-        Usage: pull [groupname] [item] ... [item]
-        arg groupname: the name of the GitLab group to pull from.
-        args item: any number of item name to pull
-        """
-        args = self.parse_arguments(arg)
-        if len(args) < 1:
-            self.perror("No group specified.")
-            return
-        self.do_coroutine(self.get_routines().pull_routine(self.get_server_username(), args[1:]))
+        self.do_coroutine(self.get_routines().safe_merge_update_routine(self.get_feedback_ui(),args[0]))
 
     complete_init_local = groupnames_complete
 

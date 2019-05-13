@@ -154,7 +154,7 @@ class Shell(GitRepoShell):
         """
         routines = self.get_routines()
         routines.load()
-        self.do_coroutine(routines.delete_worktree_routine())
+        self.do_coroutine(routines.delete_worktree_routine(self.get_feedback_ui()))
 
     def do_commit_all(self, args):
         """Commits the changes in the asset tree and the root.
