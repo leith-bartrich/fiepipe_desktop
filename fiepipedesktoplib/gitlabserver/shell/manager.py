@@ -4,6 +4,7 @@ from fiepipelib.gitlabserver.data.gitlab_server import GitLabServer
 from fiepipelib.gitlabserver.routines.manager import GitLabServerManagerInteractiveRoutines
 from fiepipedesktoplib.gitlabserver.shell.gitlab_hostname_input_ui import GitLabHostnameInputDefaultShellUI
 from fiepipedesktoplib.gitlabserver.shell.gitlab_username_input_ui import GitLabUsernameInputDefaultShellUI
+from fiepipedesktoplib.gitlabserver.shell.gitlab_private_token_input_ui import GitLabPrivateTokenInputDefaultShellUI
 from fiepipedesktoplib.gitlabserver.shell.gitlabserver import GitLabServerShell
 from fiepipedesktoplib.gitlabserver.shell.server_name_var_command import GitLabServerNameVar
 from fiepipedesktoplib.locallymanagedtypes.shells.AbstractLocalManagedTypeCommand import LocalManagedTypeCommand
@@ -16,14 +17,14 @@ class GitLabServerManagerShell(LocalManagedTypeCommand[GitLabServer]):
     def get_routines(self) -> GitLabServerManagerInteractiveRoutines:
         return GitLabServerManagerInteractiveRoutines(feedback_ui=self.get_feedback_ui(),
                                                       hostname_input_default_ui=GitLabHostnameInputDefaultShellUI(self),
-                                                      username_input_default_ui=GitLabUsernameInputDefaultShellUI(self))
+                                                      username_input_default_ui=GitLabUsernameInputDefaultShellUI(self),
+                                                      private_token_input_default_ui=GitLabPrivateTokenInputDefaultShellUI(self))
 
     def get_shell(self, item: GitLabServer) -> AbstractShell:
         # no shell currently.  We call super instead.
         server_name = GitLabServerNameVar()
         server_name.set_value(item.get_name())
-        fqdn_var = FQDNVarCommand()
-        return GitLabServerShell(server_name, fqdn_var)
+        return GitLabServerShell(server_name)
 
     def get_plugin_names_v1(self) -> typing.List[str]:
         ret = super(GitLabServerManagerShell, self).get_plugin_names_v1()

@@ -1,10 +1,10 @@
 import typing
 
 from fiepipelib.container.shared.routines.gitlabserver import GitlabManagedContainerInteractiveRoutines
-from fiepipedesktoplib.container.shells import DescriptionInputUI
+from fiepipedesktoplib.container.shells.description_input_ui import DescriptionInputUI
 from fiepipedesktoplib.container.shells import AllContainerManagementInteractiveRoutines, FQDNContainerManagementInteractiveRoutines
-from fiepipelib.gitlabserver.shell.gitlabserver import GitLabServerShell
-from fiepipelib.gitlabserver.shell.locally_managed_type import LocalManagedGroupTypeCommand, LocalManagedUserTypeCommand
+from fiepipedesktoplib.gitlabserver.shell.gitlabserver import GitLabServerShell
+from fiepipedesktoplib.gitlabserver.shell.locally_managed_type import LocalManagedGroupTypeCommand, LocalManagedUserTypeCommand
 from fiepipedesktoplib.shells.ui.fqdn_input_ui import FQDNInputUI
 from fiepipedesktoplib.shells.variables.fqdn_var_command import FQDNVarCommand
 
