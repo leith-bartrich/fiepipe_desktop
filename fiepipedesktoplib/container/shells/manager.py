@@ -10,6 +10,7 @@ from fiepipedesktoplib.shells.AbstractShell import AbstractShell
 from fiepipedesktoplib.shells.variables.fqdn_var_command import FQDNVarCommand
 from fiepipedesktoplib.container.shells.description_input_ui import DescriptionInputUI
 from fiepipedesktoplib.container.shells.container_id_var_command import ContainerIDVariableCommand
+from fiepipedesktoplib.container.shells.gitlabserver import GroupContainersCommand
 
 class ContainerManagerCommand(LocalManagedTypeCommand[Container]):
     """A command for working with containers"""
@@ -19,10 +20,14 @@ class ContainerManagerCommand(LocalManagedTypeCommand[Container]):
     def get_fqdn(self) -> str:
         return self._fqdn_var_command.get_value()
 
+    _gitlab_containers_command:GroupContainersCommand = None
+
     def __init__(self, fqdn_var_command: FQDNVarCommand):
         self._fqdn_var_command = fqdn_var_command
         super().__init__()
         self.add_variable_command(fqdn_var_command, "fqdn", [], False)
+        self._gitlab_containers_command = GroupContainersCommand(self._fqdn_var_command)
+        self.add_submenu(self._gitlab_containers_command,"gitlab",[])
 
     def get_routines(self) -> AbstractContainerManagementInteractiveRoutines:
         if self._fqdn_var_command.is_any():
